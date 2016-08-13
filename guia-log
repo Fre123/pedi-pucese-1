@@ -1,0 +1,38 @@
+<?php
+/*Solo se debe agregar el modulo log*/
+return [
+    'components' => [
+/*-------------------------------------------------------------------------------*/
+            'log' => [
+            'targets' => [
+                [
+        'class' => 'yii\log\FileTarget',
+        'levels' => ['info'], 
+        'prefix' => function ($message) {
+        $session = Yii::$app->has('session', true) ? Yii::$app->get('session') : null;
+        $sessionID = $session && $session->getIsActive() ? $session->getId() : '-';
+        return "[$sessionID]";
+         }, 
+        'logFile' => '@runtime/logs/login3.log'
+                ],
+            ],
+        ],
+/*-------------------------------------------------------------------------------*/
+
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'pgsql:host=localhost;port=5432;dbname=pedi',
+            'username' => 'postgre',
+            'password' => '123',
+            'charset'  => 'utf8',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
+    ],
+];
